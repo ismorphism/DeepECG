@@ -16,6 +16,6 @@ ECG classification programs based on ML/DL methods
 python3 ECG_CNN.py
 ```
 
-#Additional info
-## For feature extraction and hearbeat rate calculation the following libraries can be useful:
+# Additional info
+### For feature extraction and hearbeat rate calculation:
 - https://github.com/PIA-Group/BioSPPy (Biosignal Processing in Python)
