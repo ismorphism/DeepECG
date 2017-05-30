@@ -1,5 +1,4 @@
 import numpy
-#import matplotlib.pyplot as plt
 import pandas
 import math
 from keras.models import Sequential
@@ -18,7 +17,6 @@ from keras import backend as K
 
 K.set_image_dim_ordering('tf') #For problems with ordering
 
-
 number_of_classes = 4
 
 def change(x): 
@@ -29,15 +27,17 @@ def change(x):
         answer[i] = max_index
     return answer.astype(np.int)
 
+#Loading of .mat files from training directory. Only 9000 time steps from every ECG file is loaded
 mypath = 'training2017/'
 onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and f[0] == 'A')]
 bats = [f for f in onlyfiles if f[7] == 'm']
-mats = [f for f in bats if (np.shape(sio.loadmat(mypath + f)['val'])[1] >= 9000)]
+mats = [f for f in bats if (np.shape(sio.loadmat(mypath + f)['val'])[1] >= 9000)] #Choic of only 9k time steps
 check = np.shape(sio.loadmat(mypath + mats[0])['val'])[1]
 X = np.zeros((len(mats), check))
 for i in range(len(mats)):
     X[i, :] = sio.loadmat(mypath + mats[i])['val'][0,:9000]
 
+#Transformation from literals (Noisy, Arithm, Other, Normal)
 target_train = np.zeros((len(mats), 1))
 Train_data = pd.read_csv(mypath + 'REFERENCE.csv', sep=',', header=None, names=None)
 for i in range(len(mats)):
@@ -56,20 +56,20 @@ for i in range(np.shape(target_train)[0]):
     dummy[int(target_train[i])] = 1
     Label_set[i, :] = dummy
 
-#X = np.abs(numpy.fft.fft(X))
-	
+#X = np.abs(numpy.fft.fft(X)) #some stuff
+
+# Normalization part
 #scaler = MinMaxScaler(feature_range=(0, 1))
 #X = scaler.fit_transform(X)
 
 
-train_len = 0.8
+train_len = 0.8 #Choice of training size
 X_train = X[:int(train_len*len(mats)), :]
 Y_train = Label_set[:int(train_len*len(mats)), :]
 X_val = X[int(train_len*len(mats)):, :]
 Y_val = Label_set[int(train_len*len(mats)):, :]
 
 # reshape input to be [samples, tensor shape (30 x 300)]
-
 n = 20
 m = 450
 c = 1 #number of channels
@@ -120,6 +120,8 @@ model.add(Dense(4096, activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(1000, activation='relu'))
 model.add(Dense(number_of_classes, activation='softmax'))
+
+#Callbacks and accuracy calculation
 #early_stopping = keras.callbacks.EarlyStopping(monitor='val_acc', min_delta=0, patience=50, verbose=1, mode='auto')
 model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
 checkpointer = ModelCheckpoint(filepath="Keras_models/weights.{epoch:02d}-{val_acc:.2f}.hdf5", monitor='val_loss', save_weights_only=False, period=1, verbose=1, save_best_only=False)
