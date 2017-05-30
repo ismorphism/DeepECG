@@ -6,6 +6,7 @@ ECG classification programs based on ML/DL methods
 - Keras framework with TensorFlow backend
 - Numpy, Scipy, Pandas libs
 - Scikit-learn framework
+- 
 
 ## Instructions for running the program
 1) Execute the training2017.zip file into folder **training2017/**
@@ -14,3 +15,7 @@ ECG classification programs based on ML/DL methods
 ```
 python3 ECG_CNN.py
 ```
+
+#Additional info
+## For feature extraction and hearbeat rate calculation the following libraries can be useful:
+- https://github.com/PIA-Group/BioSPPy (Biosignal Processing in Python)
