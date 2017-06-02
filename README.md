@@ -1,5 +1,5 @@
 # DeepECG
-ECG classification programs based on ML/DL methods
+ECG classification programs based on ML/DL methods. Training ECG data (training2017/) consists one electrode voltage measurements taken as the difference between RA and LA electrodes with no ground.
 
 ## Prerequisites:
 - Python 3.5 and higher
