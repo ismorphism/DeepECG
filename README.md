@@ -14,11 +14,11 @@ ECG classification programs based on ML/DL methods. There are two datasets:
 2) Run the file **CNN_ECG.py** with the following commands:
 - If you want to train your model on the 2017 PhysioNet/CinC Challenge dataset:
       ```
-      python3 ECG_CNN.py cinc
+      python ECG_CNN.py cinc
       ```
 - If you want to train your model on the MIT-BH dataset:
       ```
-      python3 ECG_CNN.py mit
+      python ECG_CNN.py mit
       ```
 
 # Additional info
