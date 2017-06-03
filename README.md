@@ -10,12 +10,16 @@ ECG classification programs based on ML/DL methods. There are two datasets:
 - Scikit-learn framework 
 
 ## Instructions for running the program
-1) Execute the training2017.zip file into folder **training2017/**
-2) Run the file CNN_ECG.py with the following command:
-  
-```
-python3 ECG_CNN.py
-```
+1) Execute the training2017.zip and MIT-BH.zip files into folders **training2017/** and **MIT-BH/** respectively
+2) Run the file CNN_ECG.py with the following commands:
+- If you want to train your model on the 2017 PhysioNet/CinC Challenge dataset:
+      ```
+      python3 ECG_CNN.py cinc
+      ```
+- If you want to train your model on the MIT-BH dataset:
+      ```
+      python3 ECG_CNN.py mit
+      ```
 
 # Additional info
 ### For feature extraction and hearbeat rate calculation:
