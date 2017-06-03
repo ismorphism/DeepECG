@@ -5,8 +5,7 @@ ECG classification programs based on ML/DL methods. Training ECG data (training2
 - Python 3.5 and higher
 - Keras framework with TensorFlow backend
 - Numpy, Scipy, Pandas libs
-- Scikit-learn framework
-- 
+- Scikit-learn framework 
 
 ## Instructions for running the program
 1) Execute the training2017.zip file into folder **training2017/**
