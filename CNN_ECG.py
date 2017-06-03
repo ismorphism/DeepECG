@@ -14,6 +14,8 @@ import numpy as np
 import keras
 from sklearn.metrics import accuracy_score
 from keras import backend as K
+import sys
+
 
 K.set_image_dim_ordering('tf') #For problems with ordering
 
@@ -27,35 +29,40 @@ def change(x):
         answer[i] = max_index
     return answer.astype(np.int)
 
-#Loading of .mat files from training directory. Only 9000 time steps from every ECG file is loaded
-mypath = 'training2017/'
-onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and f[0] == 'A')]
-bats = [f for f in onlyfiles if f[7] == 'm']
-mats = [f for f in bats if (np.shape(sio.loadmat(mypath + f)['val'])[1] >= 9000)] #Choic of only 9k time steps
-check = np.shape(sio.loadmat(mypath + mats[0])['val'])[1]
-X = np.zeros((len(mats), check))
-for i in range(len(mats)):
-    X[i, :] = sio.loadmat(mypath + mats[i])['val'][0,:9000]
+if sys.argv[1] == 'cinc':
+    #Loading of .mat files from training directory. Only 9000 time steps from every ECG file is loaded
+    mypath = 'training2017/'
+    onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and f[0] == 'A')]
+    bats = [f for f in onlyfiles if f[7] == 'm']
+    mats = [f for f in bats if (np.shape(sio.loadmat(mypath + f)['val'])[1] >= 9000)] #Choic of only 9k time steps
+    check = np.shape(sio.loadmat(mypath + mats[0])['val'])[1]
+    X = np.zeros((len(mats), check))
+    for i in range(len(mats)):
+        X[i, :] = sio.loadmat(mypath + mats[i])['val'][0,:9000]
 
-#Transformation from literals (Noisy, Arithm, Other, Normal)
-target_train = np.zeros((len(mats), 1))
-Train_data = pd.read_csv(mypath + 'REFERENCE.csv', sep=',', header=None, names=None)
-for i in range(len(mats)):
-    if Train_data.loc[Train_data[0] == mats[i][:6], 1].values == 'N':
-        target_train[i] = 0
-    elif Train_data.loc[Train_data[0] == mats[i][:6], 1].values == 'A':
-        target_train[i] = 1
-    elif Train_data.loc[Train_data[0] == mats[i][:6], 1].values == 'O':
-        target_train[i] = 2
-    else:
-        target_train[i] = 3
+    #Transformation from literals (Noisy, Arithm, Other, Normal)
+    target_train = np.zeros((len(mats), 1))
+    Train_data = pd.read_csv(mypath + 'REFERENCE.csv', sep=',', header=None, names=None)
+    for i in range(len(mats)):
+        if Train_data.loc[Train_data[0] == mats[i][:6], 1].values == 'N':
+            target_train[i] = 0
+        elif Train_data.loc[Train_data[0] == mats[i][:6], 1].values == 'A':
+            target_train[i] = 1
+        elif Train_data.loc[Train_data[0] == mats[i][:6], 1].values == 'O':
+            target_train[i] = 2
+        else:
+            target_train[i] = 3
 
-Label_set = np.zeros((len(mats), number_of_classes))
-for i in range(np.shape(target_train)[0]):
-    dummy = np.zeros((number_of_classes))
-    dummy[int(target_train[i])] = 1
-    Label_set[i, :] = dummy
-
+    Label_set = np.zeros((len(mats), number_of_classes))
+    for i in range(np.shape(target_train)[0]):
+        dummy = np.zeros((number_of_classes))
+        dummy[int(target_train[i])] = 1
+        Label_set[i, :] = dummy
+        
+elif sys.argv[1] == 'mit':
+    print('In proces...')
+    sys.exit()
+    
 #X = np.abs(numpy.fft.fft(X)) #some stuff
 
 # Normalization part
