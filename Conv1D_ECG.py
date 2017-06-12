@@ -31,11 +31,11 @@ def change(x):  #From boolean arrays to decimal arrays
 mypath = 'training2017/' #Training directory
 onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and f[0] == 'A')]
 bats = [f for f in onlyfiles if f[7] == 'm']
-check = 2000
+check = 100
 mats = [f for f in bats if (np.shape(sio.loadmat(mypath + f)['val'])[1] >= check)]
 size = len(mats)
 print('Total training size is ', size)
-big = 10000
+big = 10500
 X = np.zeros((size, big))
 # for i in range(size):
     # X[i, :] = sio.loadmat(mypath + mats[i])['val'][0, :check]
@@ -105,7 +105,7 @@ model.add(Dense(128, kernel_initializer='normal', activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(128, kernel_initializer='normal', activation='relu'))
 model.add(Dropout(0.5))
-model.add(Dense(64, kernel_initializer='normal', activation='relu'))
+model.add(Dense(128, kernel_initializer='normal', activation='relu'))
 model.add(Dropout(0.5))
 model.add(Dense(number_of_classes, kernel_initializer='normal', activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
