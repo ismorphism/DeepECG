@@ -32,7 +32,7 @@ If you use my repo - then, please, cite my paper. This is a BibTex citation:
 
 
     @article{pyakillya_kazachenko_mikhailovsky_2017,
-        author = {Pyakillya, B I and Kazachenko, N and Mikhailovsky, N},
+        author = {Boris Pyakillya, Natasha Kazachenko, Nick Mikhailovsky},
         title = {Deep Learning for ECG Classification},
         journal = {Journal of Physics: Conference Series},
         year = {2017},
