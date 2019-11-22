@@ -21,12 +21,12 @@ number_of_classes = 4
 
 
 def change(x):  # Для получения чисел от 0 до 3
-	answer = np.zeros((np.shape(x)[0]))
-	for i in range(np.shape(x)[0]):
-		max_value = max(x[i, :])
-		max_index = list(x[i, :]).index(max_value)
-		answer[i] = max_index
-	return answer.astype(np.int)
+    answer = np.zeros((np.shape(x)[0]))
+    for i in range(np.shape(x)[0]):
+        max_value = max(x[i, :])
+        max_index = list(x[i, :]).index(max_value)
+        answer[i] = max_index
+    return answer.astype(np.int)
 
 
 mypath = 'training2017/'
@@ -58,7 +58,7 @@ for i in range(np.shape(target_train)[0]):
     dummy[int(target_train[i])] = 1
     Label_set[i, :] = dummy
 
-inputs = 60 #Previus value for 9k check is 95
+inputs = 60  # Previus value for 9k check is 95
 X_new = np.zeros((size, inputs))
 for i in range(size):
     out = ecg.christov_segmenter(signal=X[i, :], sampling_rate=300.)
@@ -69,7 +69,7 @@ for i in range(size):
 
 print('All is OK')
 X = X_new
-X = (X - X.mean())/(X.std())
+X = (X - X.mean()) / (X.std())
 Label_set = Label_set[:size, :]
 
 
@@ -97,68 +97,69 @@ Label_set = Label_set[:size, :]
 # X = scaler.fit_transform(X)
 
 
-
 def train_and_evaluate__model(model, X_train, Y_train, X_val, Y_val, i):
-	checkpointer = ModelCheckpoint(filepath='Dense_models/Best_model of ' + str(i) + '.h5', monitor='val_acc', verbose=1, save_best_only=True)
-	# early_stopping = keras.callbacks.EarlyStopping(monitor='val_acc', min_delta=0, patience=50, verbose=1, mode='auto')
-	hist = model.fit(X_train, Y_train, epochs=500, batch_size=256, validation_data=(X_val, Y_val), verbose=2, shuffle=True, callbacks=[checkpointer])
-	pd.DataFrame(hist.history).to_csv(path_or_buf='Dense_models/History '  + str(i) + '.csv')
-	model.save('my_model ' + str(i) + '.h5')
-	predictions = model.predict(X_val)
-	score = accuracy_score(change(Y_val), change(predictions))
-	print(score)
-	df = pd.DataFrame(change(predictions))
-	df.to_csv(path_or_buf='Dense_models/Preds_' + str(format(score, '.4f')) + '__' +  str(i) + '.csv', index=None, header=None)
-	model.save('Dense_models/' + str(format(score, '.4f')) + '__' +  str(i) + '_my_model.h5')
-	pd.DataFrame(confusion_matrix(change(Y_val), change(predictions))).to_csv(path_or_buf='Dense_models/Result_Conf' + str(format(score, '.4f')) + '__' +  str(i) + '.csv', index=None, header=None)
-	
-	
+    checkpointer = ModelCheckpoint(filepath='Dense_models/Best_model of ' + str(i) + '.h5', monitor='val_acc',
+                                   verbose=1, save_best_only=True)
+    # early_stopping = keras.callbacks.EarlyStopping(monitor='val_acc', min_delta=0, patience=50, verbose=1, mode='auto')
+    hist = model.fit(X_train, Y_train, epochs=500, batch_size=256, validation_data=(X_val, Y_val), verbose=2,
+                     shuffle=True, callbacks=[checkpointer])
+    pd.DataFrame(hist.history).to_csv(path_or_buf='Dense_models/History ' + str(i) + '.csv')
+    model.save('my_model ' + str(i) + '.h5')
+    predictions = model.predict(X_val)
+    score = accuracy_score(change(Y_val), change(predictions))
+    print(score)
+    df = pd.DataFrame(change(predictions))
+    df.to_csv(path_or_buf='Dense_models/Preds_' + str(format(score, '.4f')) + '__' + str(i) + '.csv', index=None,
+              header=None)
+    model.save('Dense_models/' + str(format(score, '.4f')) + '__' + str(i) + '_my_model.h5')
+    pd.DataFrame(confusion_matrix(change(Y_val), change(predictions))).to_csv(
+        path_or_buf='Dense_models/Result_Conf' + str(format(score, '.4f')) + '__' + str(i) + '.csv', index=None,
+        header=None)
 
 
 def create_model():
-	model = Sequential()
-	model.add(Dense(1024, input_shape=(inputs,), kernel_initializer='normal', activation='relu'))
-	model.add(Dense(1024, kernel_initializer='normal', activation='relu'))
-	model.add(Dropout(0.5))
-	model.add(Dense(1024, kernel_initializer='normal', activation='relu'))
-	model.add(Dense(1024, kernel_initializer='normal', activation='relu'))
-	model.add(Dropout(0.5))
-	model.add(Dense(512, kernel_initializer='normal', activation='relu'))
-	model.add(Dense(512, kernel_initializer='normal', activation='relu'))
-	model.add(Dense(512, kernel_initializer='normal', activation='relu'))
-	model.add(Dropout(0.5))
-	model.add(Dense(256, kernel_initializer='normal', activation='relu'))
-	model.add(Dense(256, kernel_initializer='normal', activation='relu'))
-	model.add(Dropout(0.5))
-	model.add(Dense(128, kernel_initializer='normal', activation='relu'))
-	model.add(Dense(128, kernel_initializer='normal', activation='relu'))
-	model.add(Dropout(0.5))
-	model.add(Dense(64, kernel_initializer='normal', activation='relu'))
-	model.add(Dense(64, kernel_initializer='normal', activation='relu'))
-	model.add(Dropout(0.5))
-	model.add(Dense(number_of_classes, kernel_initializer='normal', activation='softmax'))
-	model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
-	return model
+    model = Sequential()
+    model.add(Dense(1024, input_shape=(inputs,), kernel_initializer='normal', activation='relu'))
+    model.add(Dense(1024, kernel_initializer='normal', activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(1024, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(1024, kernel_initializer='normal', activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(512, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(512, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(512, kernel_initializer='normal', activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(256, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(256, kernel_initializer='normal', activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(128, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(128, kernel_initializer='normal', activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(64, kernel_initializer='normal', activation='relu'))
+    model.add(Dense(64, kernel_initializer='normal', activation='relu'))
+    model.add(Dropout(0.5))
+    model.add(Dense(number_of_classes, kernel_initializer='normal', activation='softmax'))
+    model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+    return model
 
 
-skf = StratifiedKFold(n_splits=10,shuffle=True)
-target_train = target_train.reshape(size,)
+skf = StratifiedKFold(n_splits=10, shuffle=True)
+target_train = target_train.reshape(size, )
 # print(skf.get_n_splits(X, target_train))
 # print(skf.split(X, target_train))
 for i, (train_index, test_index) in enumerate(skf.split(X, target_train)):
-	print("TRAIN:", train_index, "TEST:", test_index)
-	# train = 0.9
-	# print('Training_size is ', int(train*size))
-	# print('Validation_size is ', size - int(train*size))
-	X_train = X[train_index, :]
-	Y_train = Label_set[train_index, :]
-	X_val = X[test_index, :]
-	Y_val = Label_set[test_index, :]
-	# X_train = X[:int(train*size), :]
-	# Y_train = Label_set[:int(train*size), :]
-	# X_val = X[int(train*size):, :]
-	# Y_val = Label_set[int(train*size):, :]
-	# model = None
-	model = create_model()
-	train_and_evaluate__model(model, X_train, Y_train, X_val, Y_val, i)
-
+    print("TRAIN:", train_index, "TEST:", test_index)
+    # train = 0.9
+    # print('Training_size is ', int(train*size))
+    # print('Validation_size is ', size - int(train*size))
+    X_train = X[train_index, :]
+    Y_train = Label_set[train_index, :]
+    X_val = X[test_index, :]
+    Y_val = Label_set[test_index, :]
+    # X_train = X[:int(train*size), :]
+    # Y_train = Label_set[:int(train*size), :]
+    # X_val = X[int(train*size):, :]
+    # Y_val = Label_set[int(train*size):, :]
+    # model = None
+    model = create_model()
+    train_and_evaluate__model(model, X_train, Y_train, X_val, Y_val, i)
