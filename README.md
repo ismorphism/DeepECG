@@ -22,9 +22,8 @@ python ECG_CNN.py mit
 ```
 3) If you want to use 1D Convolutional Neural Network for ECG classification then run the file **Conv1D_ECG.py** with the following commands:
 ```
-python Conv1D_ECG.py 0.9 55 25 10
+python Conv1D_ECG.py
 ```
-where **0.9** is a fraction of training size for full dataset, **55** is a first filter width, **25** is second filter width, **10** is a third filter width.
   
 # Additional info
 ### Citation
