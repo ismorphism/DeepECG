@@ -2,7 +2,6 @@
 # 2019/11/25    YANG Jie    小修改
 from sklearn.metrics import confusion_matrix, accuracy_score
 from keras.callbacks import ModelCheckpoint
-from sklearn.model_selection import StratifiedKFold
 from sklearn.preprocessing import MinMaxScaler, RobustScaler
 import pandas as pd
 import scipy.io as sio
@@ -11,8 +10,7 @@ from os.path import isfile, join
 import numpy as np
 import keras
 from keras.models import Sequential
-from keras.layers import Dense, Activation, Dropout, Conv2D, MaxPooling2D, Flatten, LSTM, Conv1D, \
-    GlobalAveragePooling1D, MaxPooling1D
+from keras.layers import Dense, Activation, Dropout, Conv1D, GlobalAveragePooling1D, MaxPooling1D
 from keras import regularizers
 from keras.utils import np_utils
 
