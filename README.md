@@ -14,11 +14,11 @@ ECG classification programs based on ML/DL methods. There are two datasets:
 2) If you want to use 2D Convolutional Neural Network for ECG classification then run the file **CNN_ECG.py** with the following commands:
  - If you want to train your model on the 2017 PhysioNet/CinC Challenge dataset:
 ```
-python ECG_CNN.py cinc
+python CNN_ECG.py cinc
 ```
  - If you want to train your model on the MIT-BH dataset:
 ```
-python ECG_CNN.py mit
+python CNN_ECG.py mit
 ```
 3) If you want to use 1D Convolutional Neural Network for ECG classification then run the file **Conv1D_ECG.py** with the following commands:
 ```
