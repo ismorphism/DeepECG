@@ -17,7 +17,7 @@ from keras import backend as K
 import sys
 
 
-K.set_image_dim_ordering('tf') #For problems with ordering
+K.set_image_data_format('channels_last')  #For problems with ordering
 
 number_of_classes = 4
 
@@ -34,8 +34,10 @@ if sys.argv[1] == 'cinc':
     mypath = 'training2017/'
     onlyfiles = [f for f in listdir(mypath) if (isfile(join(mypath, f)) and f[0] == 'A')]
     bats = [f for f in onlyfiles if f[7] == 'm']
+    print ("Bats is, ", bats)
     mats = [f for f in bats if (np.shape(sio.loadmat(mypath + f)['val'])[1] >= 9000)] #Choic of only 9k time steps
     check = np.shape(sio.loadmat(mypath + mats[0])['val'])[1]
+    print ("Check is", check)
     X = np.zeros((len(mats), check))
     for i in range(len(mats)):
         X[i, :] = sio.loadmat(mypath + mats[i])['val'][0,:9000]
@@ -131,7 +133,7 @@ model.add(Dense(number_of_classes, activation='softmax'))
 #Callbacks and accuracy calculation
 #early_stopping = keras.callbacks.EarlyStopping(monitor='val_acc', min_delta=0, patience=50, verbose=1, mode='auto')
 model.compile(loss='categorical_crossentropy', optimizer='rmsprop', metrics=['accuracy'])
-checkpointer = ModelCheckpoint(filepath="Keras_models/weights.{epoch:02d}-{val_acc:.2f}.hdf5", monitor='val_loss', save_weights_only=False, period=1, verbose=1, save_best_only=False)
+checkpointer = ModelCheckpoint(filepath="Keras_models/weights.{epoch:02d}-{val_acc:.2f}.hdf5", monitor='val_loss', save_weights_only=False, period=1, verbose=1, save_best_only=True)
 model.fit(X_train, Y_train, epochs=250, batch_size=batch_size, validation_data=(X_val, Y_val), verbose=2, shuffle=False, callbacks=[checkpointer])
 model.save('Keras_models/my_model_' + str(i) + '_' + str(j) + '_' + str() + '.h5')
 predictions = model.predict(X_val)
