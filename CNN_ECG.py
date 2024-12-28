@@ -53,7 +53,7 @@ if sys.argv[1] == 'cinc':
         dummy = np.zeros((number_of_classes))
         dummy[int(target_train[i])] = 1
         Label_set[i, :] = dummy'''
-    Label_set = np.eye(number_of_classes)[target_train.astype(int)]
+    Label_set = np.eye(number_of_classes)[target_train.astype(int)].reshape(-1, number_of_classes)
         
 elif sys.argv[1] == 'mit':
     print('In proces...')
